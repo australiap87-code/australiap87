@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Salería — Sales del Mundo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --sand: #e8dcc8;
+    --salt: #fdfaf5;
+    --dark: #2a2118;
+    --brown: #6b4f35;
+    --accent: #c8a96e;
+    --rose: #d4897a;
+    --teal: #4a8b8c;
+    --text: #3d3025;
+    --light-text: #8a7560;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark);
+    color: var(--cream);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+  }
+  .logo span { color: var(--accent); font-style: italic; }
+
+  .header-right { display: flex; align-items: center; gap: 2rem; }
+
+  .cart-btn {
+    background: var(--accent);
+    color: var(--dark);
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+  .cart-btn:hover { background: #d4b87e; transform: translateY(-1px); }
+
+  .cart-count {
+    background: var(--rose);
+    color: white;
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--dark) 0%, #3d2e1e 60%, var(--brown) 100%);
+    color: var(--cream);
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8a96e' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--sand);
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* FILTERS */
+  .filters {
+    background: var(--salt);
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--sand);
+    position: sticky;
+    top: 70px;
+    z-index: 90;
+    align-items: center;
+  }
+  .filter-label { font-size: 0.8rem; color: var(--light-text); font-weight: 500; margin-right: 0.5rem; }
+  .filter-btn {
+    background: none;
+    border: 1.5px solid var(--sand);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--dark);
+    font-weight: 500;
+  }
+
+  /* SEARCH */
+  .search-bar {
+    padding: 1.5rem 2rem 0;
+    max-width: 400px;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 0.7rem 1.2rem;
+    border: 1.5px solid var(--sand);
+    border-radius: 30px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input:focus { border-color: var(--accent); }
+
+  /* GRID */
+  .products-section { padding: 1.5rem 2rem 4rem; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+  }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.2rem;
+  }
+
+  /* CARD */
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  }
+
+  .card-img {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    position: relative;
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--rose);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .card-badge.org { background: var(--teal); }
+  .card-badge.rare { background: var(--brown); }
+
+  .card-body {
+    padding: 0.9rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-category {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--light-text);
+    margin-bottom: 0.3rem;
+  }
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--dark);
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 0.78rem;
+    color: var(--light-text);
+    line-height: 1.4;
+    flex: 1;
+    margin-bottom: 0.8rem;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--brown);
+  }
+  .card-weight {
+    font-size: 0.7rem;
+    color: var(--light-text);
+  }
+
+  .add-btn {
+    background: var(--dark);
+    color: white;
+    border: none;
+    padding: 0.45rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+  .add-btn:hover { background: var(--brown); }
+  .add-btn.added {
+    background: var(--teal);
+    animation: pop 0.3s ease;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--dark);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    z-index: 500;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* CART SIDEBAR */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .overlay.open { opacity: 1; pointer-events: all; }
+
+  .cart-sidebar {
+    position: fixed;
+    top: 0; right: 0;
+    width: min(420px, 100vw);
+    height: 100vh;
+    background: var(--salt);
+    z-index: 300;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+  }
+  .cart-sidebar.open { transform: translateX(0); }
+
+  .cart-header {
+    background: var(--dark);
+    color: white;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cart-header h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .cart-items { flex: 1; overflow-y: auto; padding: 1rem; }
+
+  .cart-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--light-text);
+  }
+  .cart-empty .big-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+  .cart-item {
+    background: white;
+    border-radius: 10px;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+  .ci-emoji { font-size: 1.8rem; }
+  .ci-info { flex: 1; }
+  .ci-name { font-weight: 500; font-size: 0.9rem; color: var(--dark); }
+  .ci-price { font-size: 0.8rem; color: var(--light-text); }
+  .ci-controls { display: flex; align-items: center; gap: 0.5rem; }
+  .qty-btn {
+    background: var(--sand);
+    border: none;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--dark);
+    transition: background 0.2s;
+  }
+  .qty-btn:hover { background: var(--accent); }
+  .qty-num { font-weight: 600; font-size: 0.9rem; min-width: 20px; text-align: center; }
+  .ci-remove {
+    background: none;
+    border: none;
+    color: var(--rose);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.2rem;
+  }
+
+  .cart-footer {
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--sand);
+    background: white;
+  }
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--dark);
+  }
+  .checkout-btn {
+    width: 100%;
+    background: var(--accent);
+    color: var(--dark);
+    border: none;
+    padding: 0.9rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .checkout-btn:hover { background: #d4b87e; }
+  .checkout-btn:disabled { background: var(--sand); color: var(--light-text); cursor: not-allowed; }
+
+  /* CHECKOUT MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 400;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: white;
+    border-radius: 16px;
+    width: min(560px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .modal-header {
+    background: var(--dark);
+    color: white;
+    padding: 1.2rem 1.5rem;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-header h2 { font-family: 'Playfair Display', serif; }
+
+  .modal-body { padding: 1.5rem; }
+
+  .step-indicator {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .step {
+    flex: 1;
+    height: 4px;
+    background: var(--sand);
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .step.active { background: var(--accent); }
+  .step.done { background: var(--teal); }
+
+  .form-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.8rem; }
+  .form-group label { font-size: 0.8rem; font-weight: 500; color: var(--light-text); }
+  .form-group input, .form-group select {
+    padding: 0.65rem 0.9rem;
+    border: 1.5px solid var(--sand);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+
+  .order-summary {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .order-summary h4 { font-weight: 600; margin-bottom: 0.7rem; font-size: 0.9rem; }
+  .summary-item { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .summary-total { font-weight: 700; font-size: 1rem; border-top: 1px solid var(--sand); padding-top: 0.5rem; margin-top: 0.5rem; }
+
+  /* payment fields */
+  .card-visual {
+    background: linear-gradient(135deg, var(--dark), var(--brown));
+    color: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .card-visual .chip { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .card-visual .card-number-display {
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    font-family: monospace;
+    margin-bottom: 0.5rem;
+  }
+  .card-visual .card-meta { display: flex; gap: 2rem; font-size: 0.75rem; opacity: 0.7; }
+
+  .modal-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+  .btn-secondary {
+    flex: 1;
+    background: var(--sand);
+    color: var(--text);
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .btn-primary {
+    flex: 2;
+    background: var(--accent);
+    color: var(--dark);
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #d4b87e; }
+
+  /* SUCCESS */
+  .success-screen {
+    text-align: center;
+    padding: 2rem;
+  }
+  .success-screen .big { font-size: 4rem; margin-bottom: 1rem; }
+  .success-screen h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .success-screen p { color: var(--light-text); margin-bottom: 1.5rem; }
+  .order-num { font-family: monospace; background: var(--cream); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; display: inline-block; margin-bottom: 1rem; }
+
+  /* NO RESULTS */
+  .no-results { text-align: center; padding: 3rem; color: var(--light-text); font-size: 1.1rem; }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">La <span>Salería</span></div>
+  <div class="header-right">
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Mi cesta
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Sales del Mundo</h1>
+  <p>100 variedades únicas — desde volcanes, océanos y montañas hasta tu mesa</p>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍  Buscar sal..." oninput="filterProducts()">
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <span class="filter-label">Filtrar:</span>
+  <button class="filter-btn active" onclick="setFilter('all', this)">Todas</button>
+  <button class="filter-btn" onclick="setFilter('marina', this)">Marina</button>
+  <button class="filter-btn" onclick="setFilter('mineral', this)">Mineral</button>
+  <button class="filter-btn" onclick="setFilter('ahumada', this)">Ahumada</button>
+  <button class="filter-btn" onclick="setFilter('aromatica', this)">Aromática</button>
+  <button class="filter-btn" onclick="setFilter('negra', this)">Negra</button>
+  <button class="filter-btn" onclick="setFilter('rosa', this)">Rosa</button>
+  <button class="filter-btn" onclick="setFilter('especial', this)">Especial</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-section">
+  <div class="section-title">Nuestras Sales</div>
+  <div class="products-grid" id="productsGrid"></div>
+  <div class="no-results" id="noResults" style="display:none">No se encontraron sales con ese filtro 🧂</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>🛒 Tu cesta</h2>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="big-icon">🧂</div>
+      <p>Tu cesta está vacía.<br>¡Añade algunas sales!</p>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">0,00 €</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>Siguiente → Tramitar pedido</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">📦 Tramitar pedido</h2>
+      <button class="close-btn" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const PRODUCTS = [
+  // MARINA
+  { id:1, name:'Flor de Sal de Cádiz', cat:'marina', emoji:'🌊', desc:'Sal artesanal recogida a mano en las salinas de Cádiz', price:4.90, weight:'125g', badge:null },
+  { id:2, name:'Sal Marina del Mediterráneo', cat:'marina', emoji:'🏖️', desc:'Grano grueso, cristales puros del mar Mediterráneo', price:2.50, weight:'500g', badge:null },
+  { id:3, name:'Flor de Sal de Guérande', cat:'marina', emoji:'🇫🇷', desc:'La famosa flor de sal francesa, suave y húmeda', price:6.20, weight:'125g', badge:'premium' },
+  { id:4, name:'Sal de Maldon', cat:'marina', emoji:'🇬🇧', desc:'Escamas crujientes y delicadas del Essex inglés', price:5.80, weight:'125g', badge:'premium' },
+  { id:5, name:'Sal de Camargue', cat:'marina', emoji:'🌿', desc:'Sal gris del delta del Ródano, sin refinar', price:3.90, weight:'250g', badge:'org' },
+  { id:6, name:'Sal Marina de Portugal', cat:'marina', emoji:'🇵🇹', desc:'Sal atlántica de las salinas de Aveiro', price:2.80, weight:'500g', badge:null },
+  { id:7, name:'Sal del Pacífico Hawaiano', cat:'marina', emoji:'🌺', desc:'Sal blanca de las costas de Molokai', price:7.50, weight:'150g', badge:'rare' },
+  { id:8, name:'Sal del Mar Muerto', cat:'marina', emoji:'🕌', desc:'Sal mineral única de las aguas más saladas del mundo', price:5.20, weight:'200g', badge:null },
+  { id:9, name:'Sal de Trapani', cat:'marina', emoji:'🇮🇹', desc:'Sal siciliana DOP, cristales blancos y minerales', price:3.50, weight:'250g', badge:null },
+  { id:10, name:'Sal Atlántica de Ibiza', cat:'marina', emoji:'🏝️', desc:'Producida en las salinas naturales de Ibiza', price:4.20, weight:'200g', badge:'org' },
+
+  // ROSA / HIMALAYA
+  { id:11, name:'Sal Rosa del Himalaya', cat:'rosa', emoji:'🌸', desc:'La clásica sal rosa con 84 minerales traza', price:3.20, weight:'500g', badge:null },
+  { id:12, name:'Sal Rosa del Himalaya fina', cat:'rosa', emoji:'💗', desc:'Molido fino, ideal para salsas y aderezos', price:3.40, weight:'500g', badge:null },
+  { id:13, name:'Sal Rosa Andina del Perú', cat:'rosa', emoji:'🦙', desc:'Extraída de antiguas minas peruanas, sabor suave', price:5.90, weight:'200g', badge:'rare' },
+  { id:14, name:'Sal Rosa de Australia', cat:'rosa', emoji:'🦘', desc:'De los lagos salados de Australia Occidental', price:6.80, weight:'150g', badge:'rare' },
+  { id:15, name:'Sal Rosa de Bolivia', cat:'rosa', emoji:'🌅', desc:'Del Salar de Uyuni, la mayor extensión salina', price:5.50, weight:'200g', badge:null },
+  { id:16, name:'Sal de Murray River', cat:'rosa', emoji:'🍂', desc:'Escamas rosas del interior de Australia', price:7.20, weight:'150g', badge:'rare' },
+  { id:17, name:'Sal Rosa de Maras', cat:'rosa', emoji:'🏔️', desc:'Cosechada en las piscinas incas del Valle Sagrado', price:6.40, weight:'150g', badge:'rare' },
+  { id:18, name:'Sal Rosa de Irán', cat:'rosa', emoji:'🌹', desc:'Sal de minas históricas con tono rosado suave', price:4.10, weight:'250g', badge:null },
+
+  // MINERAL
+  { id:19, name:'Sal Gris de Bretaña', cat:'mineral', emoji:'⚓', desc:'Gris natural por arcilla de fondo, rica en minerales', price:3.80, weight:'250g', badge:null },
+  { id:20, name:'Sal Azul de Persia', cat:'mineral', emoji:'💙', desc:'Rarísima sal azul por venas de silvita, muy exclusiva', price:18.90, weight:'80g', badge:'rare' },
+  { id:21, name:'Sal Verde de Hawái', cat:'mineral', emoji:'🌿', desc:'Con bambú activado, color verde único y antioxidante', price:9.50, weight:'120g', badge:'rare' },
+  { id:22, name:'Sal Roja de Hawái', cat:'mineral', emoji:'🌋', desc:'Enriquecida con arcilla volcánica alaea roja', price:8.90, weight:'120g', badge:'rare' },
+  { id:23, name:'Sal Violeta de la India', cat:'mineral', emoji:'💜', desc:'Kala Namak, sal volcánica sulfurosa única', price:4.70, weight:'200g', badge:null },
+  { id:24, name:'Sal de Lava Negra de Chipre', cat:'mineral', emoji:'🖤', desc:'Flor de sal con carbón activado, elegante y pura', price:10.50, weight:'100g', badge:'rare' },
+  { id:25, name:'Sal de Roca de Polonia', cat:'mineral', emoji:'🇵🇱', desc:'Sal de mina de Wieliczka, patrimonio UNESCO', price:4.30, weight:'300g', badge:null },
+  { id:26, name:'Sal de Roca de Colombia', cat:'mineral', emoji:'🏔️', desc:'Extraída de minas andinas de 150 millones de años', price:3.90, weight:'250g', badge:null },
+  { id:27, name:'Sal de Roca de Etiopía', cat:'mineral', emoji:'🌍', desc:'Sal fósil del desierto de Danakil, una de las más antiguas', price:5.60, weight:'200g', badge:'rare' },
+  { id:28, name:'Sal de Bambú Coreana', cat:'mineral', emoji:'🎋', desc:'Horneada 9 veces en bambú, proceso tradicional milenario', price:14.90, weight:'100g', badge:'rare' },
+  { id:29, name:'Sal de Montaña de Austria', cat:'mineral', emoji:'🏔️', desc:'De los Alpes austriacos, sabor limpio y suave', price:3.60, weight:'300g', badge:null },
+  { id:30, name:'Sal Gema de España', cat:'mineral', emoji:'💎', desc:'Sal de roca española sin procesar ni refinar', price:2.20, weight:'500g', badge:null },
+
+  // AHUMADA
+  { id:31, name:'Sal Ahumada con Roble', cat:'ahumada', emoji:'🌲', desc:'Ahumada lentamente con madera de roble español', price:6.50, weight:'150g', badge:null },
+  { id:32, name:'Sal Ahumada con Aliso', cat:'ahumada', emoji:'🔥', desc:'Madera de aliso para un ahumado más suave y dulce', price:6.80, weight:'150g', badge:null },
+  { id:33, name:'Sal Ahumada Vikinga', cat:'ahumada', emoji:'⚔️', desc:'Ahumada según método tradicional escandinavo', price:8.20, weight:'120g', badge:'rare' },
+  { id:34, name:'Sal Ahumada con Manzano', cat:'ahumada', emoji:'🍎', desc:'Notas frutales del manzano, ideal con carnes blancas', price:7.10, weight:'130g', badge:null },
+  { id:35, name:'Sal Ahumada de Haya', cat:'ahumada', emoji:'🌳', desc:'Sabor intenso y redondo, perfecta para barbacoa', price:6.90, weight:'150g', badge:null },
+  { id:36, name:'Sal Ahumada de Whisky', cat:'ahumada', emoji:'🥃', desc:'Ahumada sobre barricas de whisky escocés', price:11.50, weight:'100g', badge:'rare' },
+  { id:37, name:'Sal Ahumada con Cereza', cat:'ahumada', emoji:'🍒', desc:'Dulce y ahumada, maridaje perfecto con pato y caza', price:8.80, weight:'120g', badge:null },
+  { id:38, name:'Sal Ahumada con Chili', cat:'ahumada', emoji:'🌶️', desc:'Combinación de ahumado y picante, explosiva en boca', price:7.40, weight:'130g', badge:null },
+  { id:39, name:'Sal Ahumada Negra de Algas', cat:'ahumada', emoji:'🌊', desc:'Ahumada con algas negras marinas, sabor umami profundo', price:9.90, weight:'100g', badge:'rare' },
+  { id:40, name:'Sal Ahumada con Romero', cat:'ahumada', emoji:'🌱', desc:'Romero fresco al ahumado, perfecta para cordero', price:6.30, weight:'150g', badge:'org' },
+
+  // AROMATICA
+  { id:41, name:'Sal con Trufa Negra', cat:'aromatica', emoji:'🍄', desc:'Trufa negra de temporada en flor de sal premium', price:12.90, weight:'80g', badge:'premium' },
+  { id:42, name:'Sal con Trufa Blanca', cat:'aromatica', emoji:'⚪', desc:'La más exclusiva, trufa blanca de Alba italiana', price:19.50, weight:'60g', badge:'rare' },
+  { id:43, name:'Sal de Lavanda', cat:'aromatica', emoji:'💜', desc:'Sal provenzal con flores de lavanda, delicada y floral', price:5.80, weight:'150g', badge:'org' },
+  { id:44, name:'Sal de Limón y Hierbas', cat:'aromatica', emoji:'🍋', desc:'Ralladura de limón siciliano con hierbas mediterráneas', price:5.20, weight:'150g', badge:null },
+  { id:45, name:'Sal de Vino Tinto', cat:'aromatica', emoji:'🍷', desc:'Infusionada en vino Rioja, color borgoña intenso', price:6.70, weight:'120g', badge:null },
+  { id:46, name:'Sal con Ajo Negro', cat:'aromatica', emoji:'🧄', desc:'Ajo negro fermentado, sabor umami y balsámico', price:8.50, weight:'100g', badge:null },
+  { id:47, name:'Sal al Curry Madras', cat:'aromatica', emoji:'🟡', desc:'Mezcla de especias indias con sal marina fina', price:4.90, weight:'150g', badge:null },
+  { id:48, name:'Sal al Pimentón de La Vera', cat:'aromatica', emoji:'🫑', desc:'DOP La Vera, sal con pimentón ahumado extremeño', price:4.50, weight:'150g', badge:null },
+  { id:49, name:'Sal con Vainilla de Madagascar', cat:'aromatica', emoji:'🌸', desc:'Para postres y coctelería, vainilla pura malgache', price:9.80, weight:'80g', badge:'rare' },
+  { id:50, name:'Sal de Azafrán', cat:'aromatica', emoji:'🌼', desc:'Con azafrán español DOP, dorada y aromática', price:13.50, weight:'70g', badge:'rare' },
+  { id:51, name:'Sal al Chipotle', cat:'aromatica', emoji:'🌶️', desc:'Jalapeño ahumado mexicano, calor persistente', price:5.80, weight:'130g', badge:null },
+  { id:52, name:'Sal con Tomillo Salvaje', cat:'aromatica', emoji:'🌿', desc:'Recogido en las sierras españolas, intenso y silvestre', price:4.80, weight:'150g', badge:'org' },
+  { id:53, name:'Sal de Naranja y Canela', cat:'aromatica', emoji:'🍊', desc:'Para repostería, combinación dulce y cítrica', price:5.40, weight:'130g', badge:null },
+  { id:54, name:'Sal con Algas Wakame', cat:'aromatica', emoji:'🌿', desc:'Algas japonesas, sabor oceánico y mineral profundo', price:6.90, weight:'120g', badge:null },
+  { id:55, name:'Sal al Wasabi', cat:'aromatica', emoji:'🥬', desc:'Wasabi japonés auténtico, picante y limpio', price:8.20, weight:'100g', badge:null },
+  { id:56, name:'Sal de Hibisco', cat:'aromatica', emoji:'🌺', desc:'Floral y ligeramente ácida, ideal en ensaladas y cócteles', price:6.10, weight:'130g', badge:'org' },
+  { id:57, name:'Sal con Miso', cat:'aromatica', emoji:'🍜', desc:'Miso blanco japonés deshidratado con sal marina', price:7.50, weight:'110g', badge:null },
+  { id:58, name:'Sal de Menta y Lima', cat:'aromatica', emoji:'🍃', desc:'Refrescante, perfecta para ceviche y coctelería', price:5.60, weight:'130g', badge:null },
+
+  // NEGRA
+  { id:59, name:'Sal Negra de Hawái', cat:'negra', emoji:'⚫', desc:'Carbón activado de coco, sabor profundo y mineral', price:8.90, weight:'120g', badge:null },
+  { id:60, name:'Sal Negra Kala Namak', cat:'negra', emoji:'🌋', desc:'Sal volcánica india, aroma azufrado, ideal vegana', price:4.50, weight:'200g', badge:null },
+  { id:61, name:'Sal Negra de Chipre', cat:'negra', emoji:'💎', desc:'Pirámides de sal negra de las costas chipriotas', price:10.20, weight:'100g', badge:'premium' },
+  { id:62, name:'Sal Negra de Islandia', cat:'negra', emoji:'🏔️', desc:'Lava volcánica islandesa, sabor terroso y único', price:12.50, weight:'90g', badge:'rare' },
+  { id:63, name:'Sal Negra con Carbón de Bambú', cat:'negra', emoji:'🎋', desc:'Fusión de tradición japonesa y carbón de bambú', price:9.10, weight:'100g', badge:null },
+
+  // ESPECIAL
+  { id:64, name:'Sal del Himalaya en Piedra', cat:'especial', emoji:'🪨', desc:'Para rallar directamente, bloque de sal puro', price:8.90, weight:'200g', badge:null },
+  { id:65, name:'Sal de Baño Rosa', cat:'especial', emoji:'🛁', desc:'Cristales gruesos para baños relajantes y mineralizantes', price:5.90, weight:'500g', badge:'org' },
+  { id:66, name:'Sal Kosher', cat:'especial', emoji:'✡️', desc:'Certificación Kosher, grano medio, muy usada en cocina', price:3.10, weight:'400g', badge:null },
+  { id:67, name:'Sal de Celda Solar', cat:'especial', emoji:'☀️', desc:'Producida solo con energía solar en el Mediterráneo', price:4.80, weight:'250g', badge:'org' },
+  { id:68, name:'Sal en Escamas Extra Finas', cat:'especial', emoji:'❄️', desc:'Escamas ultra delgadas que se deshacen en boca', price:7.20, weight:'100g', badge:null },
+  { id:69, name:'Sal para Cócteles', cat:'especial', emoji:'🍹', desc:'Grano especial para escarchas, sabor salado equilibrado', price:4.60, weight:'150g', badge:null },
+  { id:70, name:'Sal Encurtidora', cat:'especial', emoji:'🥒', desc:'Sin aditivos, perfecta para fermentados y encurtidos', price:2.90, weight:'1kg', badge:null },
+  { id:71, name:'Sal para Pan', cat:'especial', emoji:'🥖', desc:'Sal de panadería, grano medio, enriquece masas', price:2.40, weight:'750g', badge:null },
+  { id:72, name:'Sal para Pasta', cat:'especial', emoji:'🍝', desc:'Grano grueso italiano, el toque auténtico al hervir', price:2.60, weight:'750g', badge:null },
+  { id:73, name:'Sal para Carne a la Brasa', cat:'especial', emoji:'🥩', desc:'Sal gruesa especial BBQ, cristales que sellan la carne', price:5.30, weight:'300g', badge:null },
+  { id:74, name:'Sal de Curación', cat:'especial', emoji:'🥓', desc:'Para charcutería y curado, con nitritos naturales', price:4.10, weight:'300g', badge:null },
+  { id:75, name:'Sal de Soja Deshidratada', cat:'especial', emoji:'🫘', desc:'Soja y sal en uno, umami concentrado para woks', price:6.80, weight:'150g', badge:null },
+  { id:76, name:'Sal Orgánica Certificada', cat:'especial', emoji:'🌱', desc:'100% ecológica, sin procesado ni aditivos químicos', price:3.90, weight:'400g', badge:'org' },
+  { id:77, name:'Sal Flor Infusionada con Oro', cat:'especial', emoji:'✨', desc:'Láminas de oro alimentario 23K sobre flor de sal', price:24.90, weight:'50g', badge:'rare' },
+  { id:78, name:'Sal Ártica de Noruega', cat:'especial', emoji:'🧊', desc:'De las aguas más frías del Ártico, pureza extrema', price:11.80, weight:'100g', badge:'rare' },
+  { id:79, name:'Sal de Manantial Suizo', cat:'especial', emoji:'🇨🇭', desc:'Agua de manantial alpino cristalizada lentamente', price:8.40, weight:'120g', badge:null },
+  { id:80, name:'Sal de Bretaña con Espirulina', cat:'especial', emoji:'💚', desc:'Sal gris con alga espirulina, cargada de proteínas', price:7.60, weight:'130g', badge:'org' },
+  { id:81, name:'Sal Ahumada Coreana', cat:'ahumada', emoji:'🇰🇷', desc:'Doce bambu, proceso artesanal de 30 días', price:13.80, weight:'100g', badge:'rare' },
+  { id:82, name:'Sal con Bergamota', cat:'aromatica', emoji:'🫖', desc:'Bergamota del sur de Italia, exótica y cítrica', price:7.30, weight:'120g', badge:null },
+  { id:83, name:'Sal con Shiitake', cat:'aromatica', emoji:'🍄', desc:'Seta shiitake deshidratada con sal marina del Japón', price:8.10, weight:'110g', badge:null },
+  { id:84, name:'Sal Picante del Infierno', cat:'aromatica', emoji:'🔥', desc:'Mezcla de 7 chiles, sólo para los más valientes', price:6.50, weight:'120g', badge:null },
+  { id:85, name:'Sal con Flores Comestibles', cat:'aromatica', emoji:'🌸', desc:'Pétalos de rosa y violeta, espectacular a la vista', price:9.20, weight:'90g', badge:'org' },
+  { id:86, name:'Sal Fumé Francés', cat:'ahumada', emoji:'🇫🇷', desc:'De las bodegas de Cognac, ahumado y elegante', price:10.80, weight:'100g', badge:'rare' },
+  { id:87, name:'Sal de Vino Blanco', cat:'aromatica', emoji:'🥂', desc:'Infusionada en Albariño gallego, para mariscos', price:6.30, weight:'130g', badge:null },
+  { id:88, name:'Sal con Pesto', cat:'aromatica', emoji:'🌿', desc:'Albahaca, piñones y queso en sal, toque italiano', price:7.80, weight:'110g', badge:null },
+  { id:89, name:'Sal de Mostaza Antigua', cat:'aromatica', emoji:'🟡', desc:'Semillas de mostaza y sal, potente y granulada', price:5.40, weight:'140g', badge:null },
+  { id:90, name:'Sal con Cacao Puro', cat:'aromatica', emoji:'🍫', desc:'Para postres gourmet, cacao 70% y flor de sal', price:8.60, weight:'90g', badge:null },
+  { id:91, name:'Sal de Mora y Pimienta', cat:'aromatica', emoji:'🫐', desc:'Acidez de mora, picante de pimienta rosa, sorprendente', price:7.10, weight:'110g', badge:null },
+  { id:92, name:'Sal de Cerveza Artesanal', cat:'aromatica', emoji:'🍺', desc:'Sal marina infusionada con lúpulo y malta de cerveza', price:6.90, weight:'130g', badge:null },
+  { id:93, name:'Sal con Nuez Moscada', cat:'aromatica', emoji:'🥜', desc:'Nuez moscada de Granada, elegante y aromática', price:5.70, weight:'140g', badge:null },
+  { id:94, name:'Sal de Aceite de Oliva', cat:'aromatica', emoji:'🫒', desc:'AOVE virgen extra deshidratado con sal siciliana', price:7.50, weight:'120g', badge:'org' },
+  { id:95, name:'Sal con Té Matcha', cat:'aromatica', emoji:'🍵', desc:'Matcha japonés ceremonial con flor de sal, umami sutil', price:9.40, weight:'90g', badge:null },
+  { id:96, name:'Sal de Café Etíope', cat:'aromatica', emoji:'☕', desc:'Café arábica tostado y molido con sal del Mar Rojo', price:8.30, weight:'100g', badge:'rare' },
+  { id:97, name:'Sal de Miel y Romero', cat:'aromatica', emoji:'🍯', desc:'Miel de lavanda deshidratada con romero y sal', price:7.60, weight:'110g', badge:'org' },
+  { id:98, name:'Sal Agridulce de Tamarindo', cat:'aromatica', emoji:'🌰', desc:'Tamarindo thai con sal marina, para cocina asiática', price:6.20, weight:'130g', badge:null },
+  { id:99, name:'Sal con Cardamomo Verde', cat:'aromatica', emoji:'🌱', desc:'Especiería nórdica con cardamomo de Guatemala', price:6.80, weight:'120g', badge:null },
+  { id:100, name:'Sal de los Dioses', cat:'especial', emoji:'👑', desc:'Mezcla exclusiva de 12 sales raras del mundo entero', price:29.90, weight:'100g', badge:'rare' },
+];
+
+const BG_COLORS = {
+  marina: '#e8f4f8', mineral: '#f0ede8', ahumada: '#f5ede3', aromatica: '#f0f5e8',
+  negra: '#e8e8e8', rosa: '#fce8e8', especial: '#f0ece0'
+};
+
+let cart = {};
+let activeFilter = 'all';
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProducts();
+}
+
+function filterProducts() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('productsGrid');
+  const noRes = document.getElementById('noResults');
+  const filtered = PRODUCTS.filter(p => {
+    const matchCat = activeFilter === 'all' || p.cat === activeFilter;
+    const matchQ = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  grid.innerHTML = filtered.map(renderCard).join('');
+  noRes.style.display = filtered.length === 0 ? 'block' : 'none';
+}
+
+function renderCard(p) {
+  const badgeHtml = p.badge
+    ? `<div class="card-badge ${p.badge === 'org' ? 'org' : p.badge === 'rare' ? 'rare' : ''}">${p.badge === 'premium' ? 'Premium' : p.badge === 'org' ? 'Eco' : 'Rareza'}</div>`
+    : '';
+  const bg = BG_COLORS[p.cat] || '#f5f5f5';
+  return `
+    <div class="product-card">
+      <div class="card-img" style="background:${bg}">
+        ${p.emoji}
+        ${badgeHtml}
+      </div>
+      <div class="card-body">
+        <div class="card-category">${p.cat}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-footer">
+          <div>
+            <div class="card-price">${p.price.toFixed(2).replace('.',',')} €</div>
+            <div class="card-weight">${p.weight}</div>
+          </div>
+          <button class="add-btn" id="btn-${p.id}" onclick="addToCart(${p.id})">+ Añadir</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function addToCart(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!cart[id]) cart[id] = { ...p, qty: 0 };
+  cart[id].qty++;
+  updateCartUI();
+  const btn = document.getElementById('btn-' + id);
+  if (btn) { btn.textContent = '✓ Añadido'; btn.classList.add('added'); setTimeout(() => { btn.textContent = '+ Añadir'; btn.classList.remove('added'); }, 1500); }
+  showToast(`🧂 ${p.name} añadida a la cesta`);
+}
+
+function removeFromCart(id) {
+  if (cart[id]) {
+    cart[id].qty--;
+    if (cart[id].qty <= 0) delete cart[id];
+    updateCartUI();
+  }
+}
+
+function deleteFromCart(id) {
+  delete cart[id];
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const items = Object.values(cart);
+  const total = items.reduce((s, x) => s + x.price * x.qty, 0);
+  const count = items.reduce((s, x) => s + x.qty, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartTotal').textContent = total.toFixed(2).replace('.', ',') + ' €';
+  document.getElementById('checkoutBtn').disabled = items.length === 0;
+
+  const el = document.getElementById('cartItems');
+  if (items.length === 0) {
+    el.innerHTML = `<div class="cart-empty"><div class="big-icon">🧂</div><p>Tu cesta está vacía.<br>¡Añade algunas sales!</p></div>`;
+    return;
+  }
+  el.innerHTML = items.map(item => `
+    <div class="cart-item">
+      <div class="ci-emoji">${item.emoji}</div>
+      <div class="ci-info">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-price">${(item.price * item.qty).toFixed(2).replace('.',',')} €</div>
+      </div>
+      <div class="ci-controls">
+        <button class="qty-btn" onclick="removeFromCart(${item.id})">−</button>
+        <span class="qty-num">${item.qty}</span>
+        <button class="qty-btn" onclick="addToCart(${item.id})">+</button>
+        <button class="ci-remove" onclick="deleteFromCart(${item.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function openCart() {
+  document.getElementById('cartSidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeCart() {
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+// CHECKOUT
+let checkoutStep = 1;
+
+function openCheckout() {
+  closeCart();
+  checkoutStep = 1;
+  document.getElementById('modalOverlay').classList.add('open');
+  renderCheckoutStep();
+}
+function closeCheckout() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function renderCheckoutStep() {
+  const items = Object.values(cart);
+  const total = items.reduce((s, x) => s + x.price * x.qty, 0);
+  const shipping = total >= 30 ? 0 : 3.95;
+  const finalTotal = total + shipping;
+
+  let html = `<div class="step-indicator">
+    <div class="step ${checkoutStep >= 1 ? 'active' : ''}"></div>
+    <div class="step ${checkoutStep >= 2 ? 'active' : ''}"></div>
+    <div class="step ${checkoutStep >= 3 ? 'done' : ''}"></div>
+  </div>`;
+
+  if (checkoutStep === 1) {
+    document.getElementById('modalTitle').textContent = '👤 Tus datos';
+    html += `<div class="form-section">
+      <h3>Información personal</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Nombre</label><input id="fname" type="text" placeholder="María"></div>
+        <div class="form-group"><label>Apellidos</label><input id="lname" type="text" placeholder="García López"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input id="email" type="email" placeholder="maria@ejemplo.com"></div>
+      <div class="form-group"><label>Teléfono</label><input id="phone" type="tel" placeholder="+34 600 000 000"></div>
+      <h3 style="margin-top:1.2rem">Dirección de entrega</h3>
+      <div class="form-group"><label>Dirección</label><input id="address" type="text" placeholder="Calle Mayor, 15, 2ºA"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Código Postal</label><input id="cp" type="text" placeholder="28001"></div>
+        <div class="form-group"><label>Ciudad</label><input id="city" type="text" placeholder="Madrid"></div>
+      </div>
+      <div class="form-group"><label>Provincia</label><select id="region">
+        <option>Madrid</option><option>Barcelona</option><option>Valencia</option>
+        <option>Sevilla</option><option>Zaragoza</option><option>Bilbao</option>
+        <option>Málaga</option><option>Murcia</option><option>Palma</option>
+        <option>Las Palmas</option><option>Alicante</option><option>Otra</option>
+      </select></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeCheckout()">Cancelar</button>
+      <button class="btn-primary" onclick="nextStep()">Continuar → Pago</button>
+    </div>`;
+  }
+
+  else if (checkoutStep === 2) {
+    document.getElementById('modalTitle').textContent = '💳 Pago';
+    html += `<div class="form-section">
+      <div class="card-visual">
+        <div class="chip">💳</div>
+        <div class="card-number-display" id="cardDisplay">•••• •••• •••• ••••</div>
+        <div class="card-meta"><span id="cardNameDisplay">NOMBRE APELLIDOS</span><span id="cardExpDisplay">MM/AA</span></div>
+      </div>
+      <div class="form-group"><label>Número de tarjeta</label>
+        <input id="cardNum" type="text" placeholder="1234 5678 9012 3456" maxlength="19"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(.{4})/g,'$1 ').trim(); document.getElementById('cardDisplay').textContent=this.value||'•••• •••• •••• ••••'">
+      </div>
+      <div class="form-group"><label>Nombre en la tarjeta</label>
+        <input id="cardName" type="text" placeholder="MARÍA GARCÍA" style="text-transform:uppercase"
+          oninput="document.getElementById('cardNameDisplay').textContent=this.value.toUpperCase()||'NOMBRE APELLIDOS'">
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Caducidad</label>
+          <input id="cardExp" type="text" placeholder="MM/AA" maxlength="5"
+            oninput="let v=this.value.replace(/[^0-9]/g,'');if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);this.value=v; document.getElementById('cardExpDisplay').textContent=this.value||'MM/AA'">
+        </div>
+        <div class="form-group"><label>CVV</label><input id="cardCvv" type="text" placeholder="123" maxlength="4"></div>
+      </div>
+      <div class="order-summary">
+        <h4>Resumen del pedido</h4>
+        ${items.map(i => `<div class="summary-item"><span>${i.emoji} ${i.name} ×${i.qty}</span><span>${(i.price*i.qty).toFixed(2).replace('.',',')} €</span></div>`).join('')}
+        <div class="summary-item"><span>🚚 Envío ${shipping === 0 ? '(gratis +30€)' : ''}</span><span>${shipping === 0 ? 'GRATIS' : shipping.toFixed(2).replace('.',',') + ' €'}</span></div>
+        <div class="summary-item summary-total"><span>TOTAL</span><span>${finalTotal.toFixed(2).replace('.',',')} €</span></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="prevStep()">← Atrás</button>
+      <button class="btn-primary" onclick="placeOrder()">🔒 Pagar ${finalTotal.toFixed(2).replace('.',',')} €</button>
+    </div>`;
+  }
+
+  else if (checkoutStep === 3) {
+    document.getElementById('modalTitle').textContent = '¡Pedido confirmado!';
+    const orderNum = 'SAL-' + Math.floor(Math.random()*90000+10000);
+    html += `<div class="success-screen">
+      <div class="big">🎉</div>
+      <h3>¡Gracias por tu pedido!</h3>
+      <p>Te hemos enviado la confirmación por email</p>
+      <div class="order-num">${orderNum}</div>
+      <p style="font-size:0.85rem">Entrega estimada: <strong>3-5 días laborables</strong></p>
+      <div style="margin-top:1.5rem">
+        <button class="btn-primary" style="width:100%; padding:0.9rem" onclick="closeCheckout(); cart={}; updateCartUI();">Volver a la tienda</button>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('modalBody').innerHTML = html;
+}
+
+function nextStep() { checkoutStep++; renderCheckoutStep(); }
+function prevStep() { checkoutStep--; renderCheckoutStep(); }
+
+function placeOrder() {
+  // Simple validation
+  const cardNum = document.getElementById('cardNum');
+  if (!cardNum || cardNum.value.replace(/\s/g,'').length < 16) {
+    showToast('⚠️ Por favor rellena todos los datos de pago'); return;
+  }
+  checkoutStep = 3;
+  renderCheckoutStep();
+}
+
+// Init
+filterProducts();
+</script>
+</body>
+</html>
